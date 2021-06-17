@@ -1,0 +1,52 @@
+[build]
+# here we will use build commands to simulate a static site build
+# simple copy/move - reference https://community.netlify.com/t/using-next-js-as-a-static-site-generator-for-netlify/3391
+  base = "base"
+  command = "./copy-build.sh"
+  publish = "post"
+#  ignore = "git diff --quiet HEAD^ HEAD ."
+##  command = "transform-build.sh"
+
+
+[build.environment]
+  CI = ""
+  ARBITRARY = ""
+[context.deploy-preview]
+
+#  command = "  || { sleep 120 ; false ; } "
+
+[[redirects]]
+  from = "/foo"
+  to = "/bar"
+  status = 301
+
+[[redirects]]
+  from = "/r/:token"
+  to = "https://38aee3bdb3a31cbd3ed5123a894f9b4b.m.pipedream.net/r/:token?id=:ref"
+  force = true
+  query = {ref = ":ref"}
+  status = 301
+
+[[redirects]]
+  from = "/s/:token"
+  to = "https://38aee3bdb3a31cbd3ed5123a894f9b4b.m.pipedream.net/s/:token?id=:ref"
+  force = true
+  query = {ref = ":ref"}
+  status = 200
+
+[[redirects]]
+  from = "/abc"
+  to = "https://zerotousers.com"
+  headers = {X-From = "Netlify"}
+
+
+[[redirects]]
+  from = "/xyz"
+  to = "https://zerotousers.com"
+  [redirects.headers]
+    X-From = "Netlify"
+
+[[headers]]
+  for = "/abc"
+  [headers.values]
+    X-From = "Netlify"
